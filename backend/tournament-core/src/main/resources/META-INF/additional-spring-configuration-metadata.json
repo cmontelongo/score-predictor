@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "ORACLE_SERVICE_URL",
+  "type": "java.lang.String",
+  "description": "A description for 'ORACLE_SERVICE_URL'"
+}]}
