@@ -1,0 +1,16 @@
+spring:
+    application:
+        name: tournament-core
+    threads:
+        virtual:
+            enabled: true
+    r2dbc:
+        url: r2dbc:postgresql://postgres-core:5432/core_db
+        username: user
+        password: password
+    sql:
+        init:
+            mode: always
+            schema-locations: classpath:schema.sql
+
+ORACLE_SERVICE_URL: http://oracle-engine:8081
