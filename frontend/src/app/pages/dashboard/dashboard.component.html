@@ -1,0 +1,123 @@
+<div class="container">
+
+  <header class="app-header">
+    <div class="logo-glow">
+      <img src="assets/trophy.png" alt="Mundial Logo" class="app-logo">
+    </div>
+    <div class="title-container">
+      <h1>World Cup 2026</h1>
+      <span class="subtitle">SCORE PREDICTOR <span style="color:var(--gold)">v1.0</span></span>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+
+    <div class="card">
+      <div class="card-header">
+        <h2>🔥 Scheduled matches</h2> <span class="badge" *ngIf="matches.length > 0">LIVE: {{ matches.length }}</span>
+      </div>
+
+      <div *ngIf="isLoading" class="loading-state">
+        <p>📡 Connecting to the stadium...</p>
+      </div>
+      <div *ngIf="!isLoading && matches.length === 0" class="no-data">
+        <p>😴 No matches for now.</p>
+      </div>
+
+      <div class="table-responsive" *ngIf="!isLoading && matches.length > 0">
+        <table>
+          <thead>
+            <tr>
+              <th>Schedule</th>
+              <th>Match</th>
+              <th>Score</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let match of matches">
+              <td>
+                <div class="date-badge">
+                  <span class="day">{{ match.matchDate | date:'dd' }}</span>
+                  <span class="time">{{ match.matchDate | date:'HH:mm' }}</span>
+                </div>
+              </td>
+
+              <td>
+                <div class="match-teams">
+                  <div class="team-row">
+                    <img [src]="getFlag(match.homeTeam)" class="flag">
+                    <span class="team-name">{{ match.homeTeam }}</span>
+                  </div>
+                  <div class="team-row">
+                    <img [src]="getFlag(match.awayTeam)" class="flag">
+                    <span class="team-name">{{ match.awayTeam }}</span>
+                  </div>
+                </div>
+              </td>
+
+              <td>
+                <ng-container *ngIf="match.id && scoreInputs[match.id]">
+                  <div class="scoreboard-container">
+                    <input type="number" [(ngModel)]="scoreInputs[match.id].home" class="score-input" placeholder="0">
+                    <span class="vs-divider">:</span>
+                    <input type="number" [(ngModel)]="scoreInputs[match.id].away" class="score-input" placeholder="0">
+                  </div>
+                </ng-container>
+              </td>
+
+              <td>
+                <button (click)="saveResult(match.id!)" class="btn-action">
+                  Finish match
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card oracle-card">
+      <div class="card-header">
+        <h2>🔮 IA Predictor</h2>
+      </div>
+
+      <div *ngIf="predictions.length === 0" class="no-data">
+        <small>Waiting for crossings...</small>
+      </div>
+
+      <div *ngFor="let p of predictions" class="prediction-mini-card">
+
+        <div class="versus-header">
+          <div class="team-side left">
+            <img [src]="getFlag(p.homeTeam)" class="flag-large">
+            <span class="team-label">{{ p.homeTeam }}</span>
+          </div>
+
+          <div class="vs-badge">VS</div>
+
+          <div class="team-side right">
+            <span class="team-label">{{ p.awayTeam }}</span>
+            <img [src]="getFlag(p.awayTeam)" class="flag-large">
+          </div>
+        </div>
+
+        <div class="prob-container">
+          <div class="prob-segment home" [style.width.%]="(p.homeWinProb || 0) * 100">
+            <span *ngIf="p.homeWinProb > 0.15">{{ (p.homeWinProb || 0) * 100 | number:'1.0-0' }}%</span>
+          </div>
+
+          <div class="prob-segment draw" [style.width.%]="(p.drawProb || 0) * 100">
+            <span *ngIf="p.drawProb > 0.15" style="font-size:0.7em">EMP</span>
+          </div>
+
+          <div class="prob-segment away" [style.width.%]="(p.awayWinProb || 0) * 100">
+            <span *ngIf="p.awayWinProb > 0.15">{{ (p.awayWinProb || 0) * 100 | number:'1.0-0' }}%</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
