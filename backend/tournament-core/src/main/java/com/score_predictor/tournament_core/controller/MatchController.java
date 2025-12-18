@@ -24,7 +24,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/matches")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:80")
 public class MatchController {
     private final MatchRepository matchRepository;
     private final TournamentService tournamentService;

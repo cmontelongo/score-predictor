@@ -9,10 +9,12 @@ export class TournamentService {
   private http = inject(HttpClient);
   private url = `${environment.apiUrlCore}/matches`;
 
+  // Obtener calendario pendiente
   getScheduledMatches() {
     return this.http.get<Match[]>(`${this.url}/scheduled`);
   }
 
+  // Capturar resultado (Finalizar partido)
   finalizeMatch(id: number, homeScore: number, awayScore: number) {
     return this.http.put(`${this.url}/${id}/finish`, { homeScore, awayScore });
   }

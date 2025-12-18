@@ -1,4 +1,6 @@
+/* --- TEMA VIBRANTE --- */
 :host {
+  /* --- COLORES GENERALES (Tema Broadcast) --- */
   --bg-gradient: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #4c1d95 100%);
   --glass-bg: rgba(255, 255, 255, 0.07);
   --glass-border: 1px solid rgba(255, 255, 255, 0.15);
@@ -10,9 +12,10 @@
   --text-main: #ffffff;
   --text-muted: #94a3b8;
 
-  --oracle-home: #fbbf24;
-  --oracle-draw: #475569;
-  --oracle-away: #38bdf8;
+/* GOLD vs NEON BLUE */
+  --oracle-home: #fbbf24;  /* Tu color 'Gold' actual */
+  --oracle-draw: #475569;  /* Gris Pizarra oscuro para no distraer */
+  --oracle-away: #38bdf8;  /* Tu color 'Neon Blue' actual */
 }
 
 .container {
@@ -21,48 +24,57 @@
   font-family: 'Poppins', sans-serif;
   color: var(--text-main);
   
+  /* IMAGEN DE FONDO */
   background-image: url('/../assets/stadium7.jpg');
   
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
+  background-attachment: fixed; /* Parallax: la imagen se queda fija al bajar */
   
   position: relative;
 }
 
+/* LA MÁSCARA (Overlay) */
+/* Esta capa es CRÍTICA: Oscurece la foto y le pone el tinte azulado */
 .container::before {
   content: "";
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
   
+  /* Gradiente: Arriba oscuro (para el título) -> Abajo un poco más azul */
   background: linear-gradient(
     to bottom, 
-    rgba(2, 6, 23, 0.9) 0%,
-    rgba(30, 27, 75, 0.85) 100%
+    rgba(2, 6, 23, 0.9) 0%,      /* Casi negro arriba */
+    rgba(30, 27, 75, 0.85) 100%  /* Azul morado oscuro abajo */
   );
   
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px); /* Un desenfoque leve para suavizar la foto */
   z-index: 0;
 }
 
+/* Para que el contenido flote sobre el fondo */
 .grid-layout, .app-header {
   position: relative;
   z-index: 1;
 }
 
+/* --- TÍTULO --- */
 h1 {
   font-family: 'Russo One', sans-serif;
+  /* Fuente deportiva */
   font-size: 3rem;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 2px;
   margin-bottom: 2.5rem;
+  /* Efecto de texto metálico/gradiente */
   background: linear-gradient(to bottom, #ffffff 0%, #94a3b8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
+/* --- GRID --- */
 .grid-layout {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -71,9 +83,11 @@ h1 {
   margin: 0 auto;
 }
 
+/* --- TARJETAS DE VIDRIO (GLASSMORPHISM) --- */
 .card {
   background: var(--glass-bg);
   backdrop-filter: blur(12px);
+  /* El truco del vidrio */
   -webkit-backdrop-filter: blur(12px);
   border: var(--glass-border);
   border-radius: 20px;
@@ -82,6 +96,7 @@ h1 {
   transition: transform 0.3s ease;
 }
 
+/* Header de la tarjeta */
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -111,25 +126,32 @@ h1 {
   box-shadow: 0 2px 10px rgba(236, 72, 153, 0.4);
 }
 
+/* --- TABLA FLOTANTE --- */
 table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0 10px;
 }
 
+/* Filas base */
 tr {
   background: rgba(0, 0, 0, 0.3);
+  /* Un poco más oscuro por defecto para mejor lectura */
   transition: all 0.2s ease;
   border: 1px solid transparent;
 }
 
+/* --- CORRECCIÓN DEL HOVER --- */
+/* En vez de blanco, usamos un azul muy oscuro y transparente */
 tr:hover {
   transform: scale(1.01);
   background: linear-gradient(90deg, rgba(59, 130, 246, 0.2) 0%, rgba(0, 0, 0, 0) 100%);
+  /* Agregamos un borde dorado a la izquierda para indicar selección */
   border-left: 4px solid var(--gold);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
+/* Bordes redondeados (ajustados para que no choquen con el borde izquierdo nuevo) */
 tr td:first-child {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
@@ -145,17 +167,21 @@ td {
   vertical-align: middle;
 }
 
+/* --- CORRECCIÓN DE HEADERS --- */
 th {
   text-align: left;
   padding: 0 1rem 1rem;
+  /* CAMBIO: Usamos Azul Neón en lugar de gris para que se lea clarito */
   color: var(--neon-blue);
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 1.5px;
   font-weight: 700;
   text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+  /* Pequeño resplandor */
 }
 
+/* --- FECHA (Círculo Neon) --- */
 .date-badge {
   display: flex;
   flex-direction: column;
@@ -179,6 +205,7 @@ th {
   color: var(--neon-blue);
 }
 
+/* --- EQUIPOS Y BANDERAS (Más grandes y vistosos) --- */
 .match-teams {
   display: flex;
   flex-direction: column;
@@ -196,6 +223,7 @@ th {
   height: 20px;
   border-radius: 4px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  /* Sombra para que resalte */
 }
 
 .team-name {
@@ -203,13 +231,16 @@ th {
   font-size: 1.1rem;
   letter-spacing: 0.5px;
   color: #fff;
+  /* Sombra negra detrás del texto para garantizar lectura en cualquier fondo */
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
 }
 
+/* --- SCOREBOARD (El marcador digital) --- */
 .scoreboard-container {
   display: flex;
   align-items: center;
   background: #000;
+  /* Fondo negro puro para contraste */
   padding: 5px 10px;
   border-radius: 8px;
   border: 1px solid #333;
@@ -222,7 +253,9 @@ th {
   background: transparent;
   border: none;
   color: var(--gold);
+  /* Números dorados/amarillos */
   font-family: 'Russo One', sans-serif;
+  /* Fuente digital */
   font-size: 1.4rem;
   width: 40px;
   text-align: center;
@@ -238,15 +271,18 @@ th {
   font-size: 0.8rem;
 }
 
+/* --- BOTÓN DE ACCIÓN (Game Button) --- */
 .btn-action {
   background: linear-gradient(to bottom, var(--gold), var(--gold-hover));
   border: none;
   border-radius: 8px;
   color: #3f2e04;
+  /* Texto oscuro sobre dorado */
   font-weight: 800;
   padding: 0.5rem 1rem;
   cursor: pointer;
   box-shadow: 0 4px 0 #b45309;
+  /* Efecto 3D "apretable" */
   transition: all 0.1s;
   text-transform: uppercase;
   font-size: 0.8rem;
@@ -264,8 +300,10 @@ th {
   filter: brightness(1.1);
 }
 
+/* --- BARRAS DE PROGRESO "CANDY" --- */
 .progress-bar {
   height: 18px;
+  /* Más delgada y elegante */
   background: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   overflow: hidden;
@@ -282,6 +320,7 @@ th {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
+/* Gradientes en las barras para que se vean "jugosas" */
 .bar.home {
   background: linear-gradient(to bottom, #3b82f6, #2563eb);
 }
@@ -294,6 +333,7 @@ th {
   background: linear-gradient(to bottom, #ef4444, #dc2626);
 }
 
+/* ESTADOS */
 .loading-state,
 .no-data {
   text-align: center;
@@ -301,50 +341,69 @@ th {
   opacity: 0.7;
 }
 
+/* RESPONSIVE */
 @media (max-width: 900px) {
   .grid-layout {
     grid-template-columns: 1fr;
   }
 }
 
+
+/* El contenedor de la fila del header */
 thead tr {
+  /* Fondo oscuro con gradiente sutil para diferenciarlo del resto */
   background: linear-gradient(90deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.8) 100%);
 
+  /* Sombra para que "flote" sobre los datos */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 
+  /* Quitamos el efecto hover y transform del header (eso es solo para el body) */
   transform: none !important;
   border: none;
 }
 
+/* Evitar que el header cambie de color al pasar el mouse (si tenías un selector genérico) */
 thead tr:hover {
   background: linear-gradient(90deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.8) 100%);
   border-left: none;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
+/* Estilo del TEXTO de los Títulos */
 th {
   font-family: 'Russo One', sans-serif;
+  /* Usamos la fuente deportiva gruesa */
   color: var(--neon-blue);
+  /* Color cian brillante */
   font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 2px;
+  /* Separación amplia para elegancia */
   padding: 1.2rem 1rem;
+  /* Más "aire" vertical */
   vertical-align: middle;
 
+  /* Borde inferior brillante */
   border-bottom: 2px solid rgba(56, 189, 248, 0.3);
 
+  /* Sombra de texto para efecto neón */
   text-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
 }
 
+/* Bordes redondeados para la barra del header */
 thead tr th:first-child {
   border-top-left-radius: 12px;
   border-bottom-left-radius: 0;
+  /* Recto abajo para conectar con la tabla */
 }
 
 thead tr th:last-child {
   border-top-right-radius: 12px;
   border-bottom-right-radius: 0;
 }
+
+
+/* --- HEADER "HERO" DEPORTIVO --- */
 
 .app-header {
   display: flex;
@@ -354,67 +413,87 @@ thead tr th:last-child {
   margin-bottom: 3rem;
   padding: 1rem;
 
+  /* Un destello de luz detrás del título para separarlo del fondo */
   background: radial-gradient(ellipse at center, rgba(56, 189, 248, 0.2) 0%, rgba(0, 0, 0, 0) 70%);
 }
 
+/* El contenedor del texto */
 .title-container {
   display: flex;
   flex-direction: column;
 }
 
+/* TÍTULO PRINCIPAL */
 h1 {
   font-family: 'Russo One', sans-serif;
   font-size: 3.5rem;
+  /* Bien grande */
   line-height: 1;
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 2px;
   font-style: italic;
+  /* Dinamismo deportivo */
 
+  /* COLOR SÓLIDO BLANCO (Máximo contraste) */
   color: #ffffff;
 
+  /* LA MAGIA: Borde negro sólido (3D) + Resplandor Azul */
   text-shadow:
     3px 3px 0px #0f172a,
+    /* Sombra dura para 3D */
     0 0 20px rgba(56, 189, 248, 0.6);
+  /* Resplandor Neón */
 
-    background: linear-gradient(to bottom, #ffffff 40%, #cbd5e1 100%);
+  /* Gradiente sutil solo en el relleno, manteniendo base blanca */
+  background: linear-gradient(to bottom, #ffffff 40%, #cbd5e1 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
+  /* Necesario para que la sombra se vea con background-clip */
   filter: drop-shadow(3px 3px 0px #0f172a);
 }
 
+/* SUBTÍTULO */
 .subtitle {
   font-family: 'Poppins', sans-serif;
   color: var(--neon-blue);
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 6px;
+  /* Muy separado estilo cine */
   text-transform: uppercase;
   margin-left: 5px;
   margin-top: 5px;
   opacity: 0.9;
 }
 
+/* --- LOGO TIPO IMAGEN --- */
 .app-logo {
-  width: 80px;
+  width: 80px;  /* Tamaño grande e imponente */
   height: auto;
   
+  /* LA CLAVE: Sombra que sigue la silueta de la imagen */
+  /* Sombra dorada/naranja para dar efecto de "Energía" */
   filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.6));
   
+  /* Mantenemos tu animación de flotación */
   animation: float 4s ease-in-out infinite;
 }
 
+/* Ajuste de animación para imagen (más suave) */
 @keyframes float {
   0% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-12px) rotate(3deg); }
+  50% { transform: translateY(-12px) rotate(3deg); } /* Flota y gira un poquito */
   100% { transform: translateY(0px) rotate(0deg); }
 }
 
+/* Responsive: Un poco más chico en celulares */
 @media (max-width: 600px) {
   .app-logo { width: 60px; }
 }
 
+/* AJUSTE RESPONSIVE */
 @media (max-width: 600px) {
   h1 {
     font-size: 2.2rem;
@@ -435,8 +514,15 @@ h1 {
   }
 }
 
+
+
+
+/* --- ESTILOS DEL ORÁCULO (IA PREDICTOR) --- */
+
+/* Contenedor de cada predicción (Tarjeta Mini) */
 .prediction-mini-card {
   background: rgba(0, 0, 0, 0.25);
+  /* Fondo oscuro para contraste */
   border-radius: 12px;
   padding: 1rem;
   margin-bottom: 1rem;
@@ -450,6 +536,7 @@ h1 {
   border-color: rgba(255, 255, 255, 0.1);
 }
 
+/* Header: Equipo - VS - Equipo */
 .versus-header {
   display: flex;
   justify-content: space-between;
@@ -462,6 +549,7 @@ h1 {
   align-items: center;
   gap: 10px;
   width: 40%;
+  /* Ocupan espacio equilibrado */
 }
 
 .team-side.left {
@@ -473,24 +561,29 @@ h1 {
   text-align: right;
 }
 
+/* TEXTO DE EQUIPOS */
 .team-label {
   font-weight: 700;
   font-size: 0.9rem;
   color: #fff;
   line-height: 1.1;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  /* Sombra de texto para leerse en cualquier fondo */
 }
 
+/* --- SOLUCIÓN DE BANDERAS BLANCAS --- */
 .flag-large {
   width: 32px;
   height: 24px;
   border-radius: 4px;
   object-fit: cover;
 
+  /* EL TRUCO: Borde sutil blanco y sombra fuerte */
   border: 1px solid rgba(255, 255, 255, 0.25);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 }
 
+/* EL "VS" CENTRAL */
 .vs-badge {
   font-family: 'Russo One', sans-serif;
   font-size: 0.8rem;
@@ -501,13 +594,17 @@ h1 {
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+/* --- BARRAS DE PROGRESO MEJORADAS --- */
 .prob-container {
   display: flex;
   height: 20px;
   background: rgba(255, 255, 255, 0.08);
+  /* Fondo de la "pista" */
   border-radius: 6px;
   overflow: hidden;
+  /* Para recortar las esquinas */
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  /* Sombra interior */
 }
 
 .prob-segment {
@@ -522,10 +619,12 @@ h1 {
   position: relative;
 }
 
+/* Colores Semánticos */
 .prob-segment.home {
   background: var(--oracle-home);
 }
 
+/* Un pequeño separador blanco entre barras */
 .prob-segment.home::after {
   content: '';
   position: absolute;

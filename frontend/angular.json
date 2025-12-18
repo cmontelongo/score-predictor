@@ -6,7 +6,8 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "mundial-frontend": {
+    "frontend": {
+      "outputPath": "dist/frontend",
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -22,6 +23,9 @@
               "src/favicon.ico",
               "src/assets"
             ],
+            "allowedCommonJsDependencies": [
+              "sweetalert2"
+            ],
             "styles": [
               "src/styles.css"
             ]
@@ -36,8 +40,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "10kB",
+                  "maximumError": "20kB"
                 }
               ],
               "outputHashing": "all"
