@@ -1,0 +1,16 @@
+.DS_Store
+.idea/*
+**/target/*
+*.log
+*.class
+*.jar
+*.war
+*.iml
+.vscode/*
+node_modules/*
+dist/*
+build/*
+.env
+*.swp
+*.swo
+Thumbs.db
