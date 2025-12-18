@@ -7,5 +7,5 @@ export interface Match {
   matchDate: string;
   stadium: string;
   stage: string;
-  status: 'SCHEDULED' | 'LIVE' | 'FINISHED';
+  status: 'SCHEDULED' | 'LIVE' | 'FINISHED'; // Enum como string
 }

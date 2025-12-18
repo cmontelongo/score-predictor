@@ -1,12 +1,12 @@
-# Usamos la misma base
-FROM eclipse-temurin:21-jdk-alpine
-
+FROM maven:3.9-eclipse-temurin-21-alpine AS build
 WORKDIR /app
+COPY pom.xml .
+RUN mvn dependency:go-offline
+COPY src ./src
+RUN mvn clean package -DskipTests
 
-# Copiamos el jar de este módulo
-COPY target/*.jar app.jar
-
-# Exponemos el puerto 8080 (internamente el contenedor usa el 8080)
+FROM eclipse-temurin:21-jre-alpine
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-
 ENTRYPOINT ["java", "-jar", "app.jar"]

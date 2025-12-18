@@ -1,82 +1,113 @@
+/* You can add global styles to this file, and also import other style files */
+
+
+/* --- PERSONALIZACIÓN GLOBAL DE SWEETALERT2 --- */
+
+/* 1. El contenedor general de la alerta */
 .swal2-popup {
-  font-family: 'Poppins', sans-serif !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6) !important;
-  border-radius: 16px !important;
+  font-family: 'Poppins', sans-serif !important; /* Fuente del cuerpo */
+  border: 1px solid rgba(255, 255, 255, 0.1) !important; /* Borde sutil */
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6) !important; /* Sombra profunda */
+  border-radius: 16px !important; /* Bordes redondeados modernos */
 }
 
+/* 2. El Título (¿Finalizar Partido?) */
 .swal2-title {
-  font-family: 'Russo One', sans-serif !important;
-  font-weight: normal !important;
+  font-family: 'Russo One', sans-serif !important; /* Fuente deportiva */
+  font-weight: normal !important; /* Russo One ya es gruesa */
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #38bdf8 !important;
+  color: #38bdf8 !important; /* Tu color Neon Blue */
   text-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
   padding-top: 1.5em !important;
 }
 
+/* 3. El contenido HTML (donde mostramos el marcador) */
 .swal2-html-container {
   font-family: 'Poppins', sans-serif !important;
   font-weight: 400;
   letter-spacing: 0.5px;
 }
 
+/* 4. Los Botones (Confirmar / Cancelar) */
 .swal2-confirm, .swal2-cancel {
   font-family: 'Poppins', sans-serif !important;
   font-weight: 700 !important;
   text-transform: uppercase !important;
   letter-spacing: 1px !important;
-  border-radius: 8px !important;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.2) !important;
+  border-radius: 8px !important; /* Botones cuadrados redondeados */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2) !important; /* Efecto 3D sutil */
   padding: 12px 24px !important;
 }
 
+/* Efecto focus para quitar el borde azul feo del navegador */
 .swal2-confirm:focus, .swal2-cancel:focus {
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2) !important;
 }
 
+
+/* --- MEJORA DE ÍCONOS SWEETALERT2 (ESTILO NEÓN) --- */
+
+/* 1. Base para todos los íconos: Quitar el fondo pálido y hacerlo brillar */
 .swal2-icon {
+  /* Hacemos el borde más grueso y brillante */
   border-width: 3px !important;
+  /* Sombra interna y externa para efecto de luz de tubo */
   box-shadow: 0 0 15px inset, 0 0 20px !important;
-  background: rgba(0, 0, 0, 0.2) !important;
+  background: rgba(0, 0, 0, 0.2) !important; /* Fondo oscuro sutil adentro */
 }
 
+/* --- ÍCONO DE ÉXITO (Check verde) --- */
 .swal2-icon.swal2-success {
+  /* Color base: Verde Esmeralda Neón */
   border-color: #10b981 !important;
-  color: #10b981 !important;
+  color: #10b981 !important; /* El color de la línea de luz */
   box-shadow: 0 0 15px rgba(16, 185, 129, 0.3) inset, 0 0 25px rgba(16, 185, 129, 0.6) !important;
 }
 
+/* Las líneas internas del check */
 .swal2-success-line-tip, .swal2-success-line-long {
   background-color: #10b981 !important;
-  box-shadow: 0 0 10px rgba(16, 185, 129, 0.8) !important;
-  height: 4px !important;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.8) !important; /* Resplandor en la línea */
+  height: 4px !important; /* Un poco más gruesas */
 }
+/* El anillo interno sutil */
 .swal2-success-ring {
   border: 3px solid rgba(16, 185, 129, 0.2) !important;
 }
 
+
+/* --- ÍCONO DE PREGUNTA (Question mark azul) --- */
 .swal2-icon.swal2-question {
+  /* Color base: Tu Azul Neón (#38bdf8) */
   border-color: #38bdf8 !important;
   color: #38bdf8 !important;
-  font-weight: 800 !important;
+  font-weight: 800 !important; /* Signo de interrogación más grueso */
   box-shadow: 0 0 15px rgba(56, 189, 248, 0.3) inset, 0 0 25px rgba(56, 189, 248, 0.6) !important;
   
+  /* Resplandor del texto '?' */
   text-shadow: 0 0 10px rgba(56, 189, 248, 1), 0 0 20px rgba(56, 189, 248, 0.5) !important;
 }
 
+
+/* --- ÍCONO DE ERROR (X roja) --- */
 .swal2-icon.swal2-error {
+  /* Color base: Rojo Intenso */
   border-color: #ef4444 !important;
   box-shadow: 0 0 15px rgba(239, 68, 68, 0.3) inset, 0 0 25px rgba(239, 68, 68, 0.6) !important;
 }
 
+/* Las líneas de la X */
 .swal2-error-line-left, .swal2-error-line-right {
   background-color: #ef4444 !important;
   box-shadow: 0 0 10px rgba(239, 68, 68, 0.8) !important;
   height: 4px !important;
 }
 
+
+/* --- ÍCONO DE CARGA (Spinner) --- */
+/* Si usas Swal.showLoading(), esto mejora el spinner */
 .swal2-loader {
-  border-color: #fbbf24 transparent #fbbf24 transparent !important;
+  border-color: #fbbf24 transparent #fbbf24 transparent !important; /* Dorado */
   box-shadow: 0 0 20px rgba(251, 191, 36, 0.4) !important;
 }

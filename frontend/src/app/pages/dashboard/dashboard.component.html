@@ -6,7 +6,7 @@
     </div>
     <div class="title-container">
       <h1>World Cup 2026</h1>
-      <span class="subtitle">SCORE PREDICTOR <span style="color:var(--gold)">v1.0</span></span>
+      <span class="subtitle">PREDICTOR <span style="color:var(--gold)">v1.0</span></span>
     </div>
   </header>
 
@@ -14,7 +14,7 @@
 
     <div class="card">
       <div class="card-header">
-        <h2>🔥 Scheduled matches</h2> <span class="badge" *ngIf="matches.length > 0">LIVE: {{ matches.length }}</span>
+        <h2>🔥 Scheduled Matches</h2> <span class="badge" *ngIf="matches.length > 0">LIVE: {{ matches.length }}</span>
       </div>
 
       <div *ngIf="isLoading" class="loading-state">
@@ -28,8 +28,8 @@
         <table>
           <thead>
             <tr>
-              <th>Schedule</th>
-              <th>Match</th>
+              <th>Starts</th>
+              <th>Matchup</th>
               <th>Score</th>
               <th></th>
             </tr>
@@ -68,7 +68,7 @@
 
               <td>
                 <button (click)="saveResult(match.id!)" class="btn-action">
-                  Finish match
+                  Save
                 </button>
               </td>
             </tr>
@@ -83,7 +83,7 @@
       </div>
 
       <div *ngIf="predictions.length === 0" class="no-data">
-        <small>Waiting for crossings...</small>
+        <small>Waiting for matchups...</small>
       </div>
 
       <div *ngFor="let p of predictions" class="prediction-mini-card">

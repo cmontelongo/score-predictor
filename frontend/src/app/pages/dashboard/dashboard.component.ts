@@ -13,24 +13,29 @@ import Swal from 'sweetalert2'; // <--- AGREGAR ESTO
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  styleUrl: './dashboard.component.css' // Ojo: en Angular 17+ suele ser styleUrl, en anteriores styleUrls
 })
 export class DashboardComponent implements OnInit {
   private tournamentService = inject(TournamentService);
   private oracleService = inject(OracleService);
-  private cdr = inject(ChangeDetectorRef);
+  private cdr = inject(ChangeDetectorRef); // <--- INYECTAR ESTO
 
+  // 1. Definimos las variables como Arrays para poder leerlas en el HTML y en el TS
   matches: Match[] = [];
   predictions: Prediction[] = [];
 
+  // 2. Tipamos correctamente el objeto de inputs
   scoreInputs: { [key: number]: { home: number, away: number } } = {};
 
+  // Variable para saber si ya intentamos cargar (para mejorar el UX del mensaje)
   isLoading = true;
 
+  // 1. Diccionario de países (Nombre en BD -> Código ISO)
+  // Agrega aquí los países que necesites según cómo estén escritos en tu BD
   countryCodes: { [key: string]: string } = {
-    // --- EUROPE (UEFA) ---
+// --- EUROPE (UEFA) ---
     'France': 'fr',
-    'England': 'gb-eng',
+    'England': 'gb-eng', // Nota: Código especial para Inglaterra
     'Belgium': 'be',
     'Spain': 'es',
     'Netherlands': 'nl',
@@ -77,7 +82,7 @@ export class DashboardComponent implements OnInit {
 
     // --- NORTH AMERICA (CONCACAF) ---
     'United States': 'us',
-    'USA': 'us',
+    'USA': 'us', // Por si acaso
     'Mexico': 'mx',
     'Canada': 'ca',
     'Costa Rica': 'cr',
@@ -106,7 +111,7 @@ export class DashboardComponent implements OnInit {
     'Japan': 'jp',
     'Iran': 'ir',
     'South Korea': 'kr',
-    'Korea Republic': 'kr',
+    'Korea Republic': 'kr', // Nombre alternativo común
     'Australia': 'au',
     'Saudi Arabia': 'sa',
     'Qatar': 'qa',
@@ -121,12 +126,12 @@ export class DashboardComponent implements OnInit {
     'Kuwait': 'kw'
   };
 
-  getFlagUrl(teamName: string): string {
+  getFlag(teamName: string): string {
     const code = this.countryCodes[teamName];
     if (code) {
       return `https://flagcdn.com/${code}.svg`;
     }
-    return 'https://flagcdn.com/un.svg';
+    return 'https://flagcdn.com/un.svg'; 
   }
 
   ngOnInit() {
@@ -147,6 +152,7 @@ export class DashboardComponent implements OnInit {
         this.initializeInputs(matchesData);
         this.matches = matchesData;
 
+        // PASO 1: Filtrar solo las predicciones de partidos pendientes
         const relevantPredictions = allPredictions.filter(pred =>
           matchesData.some(match =>
             match.homeTeam === pred.homeTeam &&
@@ -154,14 +160,21 @@ export class DashboardComponent implements OnInit {
           )
         );
 
+        // PASO 2 (NUEVO): Eliminar duplicados visuales
+        // Usamos un Map donde la 'clave' son los equipos. 
+        // Si ya existe, lo sobrescribe (o lo ignora), dejando solo uno.
         const uniquePredictionsMap = new Map();
 
         relevantPredictions.forEach(p => {
+          // Creamos un ID único para el partido: ej. "Argentina-Francia"
           const key = `${p.homeTeam}-${p.awayTeam}`;
 
+          // Guardamos en el mapa. Si hay repetidos, el último gana (sobrescribe al anterior)
+          // Esto asegura que mostremos la predicción más reciente si vienen ordenadas por ID
           uniquePredictionsMap.set(key, p);
         });
 
+        // Convertimos los valores del mapa de vuelta a un array
         this.predictions = Array.from(uniquePredictionsMap.values());
 
         this.isLoading = false;
@@ -174,35 +187,42 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  // Método separado para limpiar la lógica de inicialización
   private initializeInputs(matches: Match[]) {
+    // 1. Empezamos con una copia de lo que ya había (para no borrar datos que estés escribiendo)
     const newInputs = { ...this.scoreInputs };
-    let hasChanges = false;
+    let hayCambios = false;
 
     matches.forEach(m => {
+      // Si el partido tiene ID y NO tiene input creado todavía...
       if (m.id && !newInputs[m.id]) {
         newInputs[m.id] = { home: 0, away: 0 };
-        hasChanges = true;
+        hayCambios = true;
       }
     });
 
-    if (hasChanges) {
+    // 2. TRUCO: Si hubo cambios, asignamos un NUEVO objeto a la variable.
+    // Esto obliga a Angular a decir: "¡Ah! scoreInputs es diferente, debo repintar el HTML".
+    if (hayCambios) {
       this.scoreInputs = { ...newInputs };
     }
   }
 
-  saveResult(matchId: number) {
+saveResult(matchId: number) {
     const scores = this.scoreInputs[matchId];
     if (!scores) return;
 
+    // Buscamos los nombres de los equipos para mostrarlos en la alerta
     const match = this.matches.find(m => m.id === matchId);
-    const homeName = match ? match.homeTeam : 'Home';
-    const awayName = match ? match.awayTeam : 'Away';
+    const homeName = match ? match.homeTeam : 'Local';
+    const awayName = match ? match.awayTeam : 'Visita';
 
+    // 1. LANZAR LA ALERTA DE CONFIRMACIÓN
     Swal.fire({
-      title: 'Finalize Match?',
+      title: '¿Finalizar Partido?',
       html: `
         <div style="font-size: 1.1rem; color: #cbd5e1; margin-bottom: 10px;">
-          The following score will be recorded:
+          Se registrará el siguiente marcador:
         </div>
         <div style="font-size: 1.5rem; font-weight: 800; color: #fbbf24; display: flex; justify-content: center; gap: 10px; align-items: center;">
            <span>${homeName}</span> 
@@ -212,25 +232,29 @@ export class DashboardComponent implements OnInit {
       `,
       icon: 'question',
       showCancelButton: true,
-
-      background: '#1e293b',
-      color: '#fff',
-
-      confirmButtonText: 'Yes, Confirm',
-      confirmButtonColor: '#fbbf24',
-
-      cancelButtonText: 'Cancel',
-      cancelButtonColor: '#ef4444',
       
+      // ESTILOS PARA QUE COMBINE CON TU TEMA OSCURO
+      background: '#1e293b',  // Fondo azul oscuro (Slate 800)
+      color: '#fff',          // Texto blanco
+      
+      confirmButtonText: 'Sí, Confirmar',
+      confirmButtonColor: '#fbbf24', // Tu color Dorado
+      
+      cancelButtonText: 'Cancelar',
+      cancelButtonColor: '#ef4444', // Rojo
+      
+      // Animación de entrada
       showClass: { popup: 'swal2-show', backdrop: 'swal2-backdrop-show', icon: 'swal2-icon-show' },
       hideClass: { popup: 'swal2-hide', backdrop: 'swal2-backdrop-hide', icon: 'swal2-icon-hide' }
     }).then((result) => {
-
+      
+      // 2. SI EL USUARIO DICE QUE SÍ
       if (result.isConfirmed) {
-
+        
+        // Mostramos un "Cargando..." mientras el backend procesa
         Swal.fire({
-          title: 'Processing...',
-          text: 'Updating table and retraining AI oracle.',
+          title: 'Procesando...',
+          text: 'Actualizando tabla y re-entrenando IA',
           background: '#1e293b',
           color: '#fff',
           allowOutsideClick: false,
@@ -242,25 +266,28 @@ export class DashboardComponent implements OnInit {
         this.tournamentService.finalizeMatch(matchId, scores.home, scores.away)
           .subscribe({
             next: () => {
+              // 3. ÉXITO
               Swal.fire({
-                title: 'Match Finalized!',
-                text: 'The oracle has updated its predictions.',
+                title: '¡Marcador Guardado!',
+                text: 'El oráculo ha actualizado sus predicciones.',
                 icon: 'success',
                 background: '#1e293b',
                 color: '#fff',
-                confirmButtonColor: '#3b82f6'
+                confirmButtonColor: '#3b82f6' // Azul neón
               });
 
+              // Limpieza y recarga de datos
               const currentInputs = { ...this.scoreInputs };
               delete currentInputs[matchId];
               this.scoreInputs = currentInputs;
-
-              this.loadData();
+              
+              this.loadData(); 
             },
             error: (err) => {
+              // 4. ERROR
               Swal.fire({
                 title: 'Error',
-                text: 'Error saving results.',
+                text: 'No se pudo guardar el resultado.',
                 icon: 'error',
                 background: '#1e293b',
                 color: '#fff'
@@ -270,7 +297,9 @@ export class DashboardComponent implements OnInit {
       }
     });
   }
-
+  
+  // Helper para buscar predicción. 
+  // Nota: Esto asume que home/away son strings únicos o IDs.
   getPrediction(home: string, away: string): Prediction | undefined {
     return this.predictions.find(p => p.homeTeam === home && p.awayTeam === away);
   }

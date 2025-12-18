@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.score_predictor.oracle_engine.repository.etl.DataIngestionService;
 import com.score_predictor.oracle_engine.service.ModelTrainingService;
@@ -16,6 +17,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/admin")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:80")
 public class AdminController {
 
     private final DataIngestionService ingestionService;
